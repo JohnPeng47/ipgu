@@ -41,6 +41,9 @@
     "merge": "bun src/merger/index.ts",
     "formatter": "bun src/formatter/index.ts",
     "chunk-video": "bun scripts/chunk-video.ts",
+    "measure-quality": "bun scripts/measure-quality.ts",
+    "viz-alignment": "bun scripts/visualize-alignment.ts",
+    "compare-subs": "bun scripts/compare-subs.ts",
     "build": "tsup",
     "prepublishOnly": "npm run build",
     "test": "bun test"
