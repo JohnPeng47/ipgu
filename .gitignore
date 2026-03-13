@@ -3,6 +3,9 @@
 movies
 node_modules
 
+# Validation data - video/audio/output files
+data/
+
 bun.lockb
 
 # Logs
