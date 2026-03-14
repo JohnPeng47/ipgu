@@ -1,0 +1,617 @@
+/* ==========================================================================
+   Paradigm Component Library
+   Extracted from predictions.paradigm.xyz
+   Generic BEM-style classes — no framework dependencies
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   0. Base / Reset
+   -------------------------------------------------------------------------- */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--p-font-mono);
+  font-size: var(--p-text-lg);
+  font-weight: var(--p-weight-regular);
+  color: var(--p-color-text);
+  background: var(--p-color-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* --------------------------------------------------------------------------
+   1. Layout
+   -------------------------------------------------------------------------- */
+
+.p-container {
+  max-width: var(--p-max-width);
+  margin-inline: auto;
+  padding-inline: var(--p-gutter);
+}
+
+@media (min-width: 1280px) {
+  .p-container {
+    padding-inline: var(--p-gutter-lg);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   2. Toggle Group
+   A bordered container with a sliding indicator behind the selected button.
+   -------------------------------------------------------------------------- */
+
+.p-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--p-space-1);
+  padding: var(--p-space-1);
+  border: var(--p-border-width-toggle) solid var(--p-color-border-toggle);
+  border-radius: var(--p-radius);
+  position: relative;
+  background: var(--p-color-bg);
+}
+
+.p-toggle__indicator {
+  position: absolute;
+  top: var(--p-space-1);
+  left: var(--p-space-1);
+  height: calc(100% - var(--p-space-1) * 2);
+  background: var(--p-color-active-bg);
+  border-radius: var(--p-radius);
+  transition: transform var(--p-transition-base), width var(--p-transition-base);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.p-toggle__btn {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: var(--p-space-3) var(--p-space-4);
+  font-family: var(--p-font-mono);
+  font-size: var(--p-text-sm);
+  font-weight: var(--p-weight-regular);
+  color: var(--p-color-text);
+  background: transparent;
+  border: none;
+  border-radius: var(--p-radius);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color var(--p-transition-fast);
+}
+
+.p-toggle__btn:hover {
+  background: var(--p-color-hover-bg);
+}
+
+.p-toggle__btn--active {
+  color: var(--p-color-active-text);
+  background: transparent; /* indicator provides the bg */
+}
+
+.p-toggle__btn--active:hover {
+  background: transparent;
+}
+
+.p-toggle__btn:disabled,
+.p-toggle__btn[disabled] {
+  opacity: var(--p-opacity-disabled);
+  background: var(--p-color-disabled-bg);
+  color: var(--p-color-disabled-text);
+  cursor: not-allowed;
+}
+
+.p-toggle__btn svg,
+.p-toggle__btn img {
+  width: 12px;
+  height: 12px;
+}
+
+/* --------------------------------------------------------------------------
+   3. Button Group
+   Adjacent bordered buttons — only one active at a time.
+   -------------------------------------------------------------------------- */
+
+.p-btn-group {
+  display: inline-flex;
+}
+
+.p-btn-group__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--p-space-2) var(--p-space-4);
+  font-family: var(--p-font-mono);
+  font-size: var(--p-text-sm);
+  font-weight: var(--p-weight-regular);
+  color: var(--p-color-text);
+  background: var(--p-color-bg);
+  border: var(--p-border-width) solid var(--p-color-border);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--p-transition-fast), color var(--p-transition-fast);
+}
+
+.p-btn-group__btn:first-child {
+  border-radius: var(--p-radius) 0 0 var(--p-radius);
+}
+
+.p-btn-group__btn:last-child {
+  border-radius: 0 var(--p-radius) var(--p-radius) 0;
+}
+
+.p-btn-group__btn:not(:first-child) {
+  margin-left: -1px;
+}
+
+.p-btn-group__btn:hover {
+  background: var(--p-color-hover-bg);
+}
+
+.p-btn-group__btn--active,
+.p-btn-group__btn[aria-pressed="true"] {
+  background: var(--p-color-active-bg);
+  color: var(--p-color-active-text);
+  z-index: 1;
+}
+
+.p-btn-group__btn:disabled {
+  opacity: var(--p-opacity-disabled);
+  background: var(--p-color-disabled-bg);
+  color: var(--p-color-disabled-text);
+  border-color: var(--p-color-disabled-border);
+  cursor: not-allowed;
+}
+
+/* --------------------------------------------------------------------------
+   4. Action Button (icon-only)
+   -------------------------------------------------------------------------- */
+
+.p-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--p-space-2);
+  background: var(--p-color-bg);
+  border: var(--p-border-width) solid var(--p-color-border);
+  border-radius: var(--p-radius);
+  cursor: pointer;
+  transition: background var(--p-transition-fast);
+}
+
+.p-action-btn:hover {
+  background: var(--p-color-hover-bg);
+}
+
+.p-action-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* --------------------------------------------------------------------------
+   5. Date Picker / Input
+   -------------------------------------------------------------------------- */
+
+.p-date-input {
+  width: 140px;
+  padding: var(--p-space-2) var(--p-space-4);
+  font-family: var(--p-font-mono);
+  font-size: var(--p-text-sm);
+  font-weight: var(--p-weight-regular);
+  font-variant-numeric: tabular-nums;
+  color: var(--p-color-text);
+  background: var(--p-color-bg);
+  border: var(--p-border-width) solid var(--p-color-border);
+  border-radius: var(--p-radius);
+}
+
+.p-date-input:focus {
+  outline: 2px solid var(--p-color-text);
+  outline-offset: 1px;
+}
+
+/* --------------------------------------------------------------------------
+   6. Search Input
+   -------------------------------------------------------------------------- */
+
+.p-search {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.p-search__icon {
+  position: absolute;
+  left: var(--p-space-4);
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+  opacity: var(--p-opacity-muted);
+}
+
+.p-search__input {
+  width: 100%;
+  padding: var(--p-space-2) var(--p-space-4);
+  padding-left: 30px;
+  font-family: var(--p-font-mono);
+  font-size: var(--p-text-sm);
+  font-weight: var(--p-weight-regular);
+  color: var(--p-color-text);
+  background: var(--p-color-bg);
+  border: var(--p-border-width) solid var(--p-color-border);
+  border-radius: var(--p-radius);
+}
+
+.p-search__input:focus {
+  outline: 2px solid var(--p-color-text);
+  outline-offset: 1px;
+}
+
+.p-search__input::placeholder {
+  color: var(--p-color-disabled-text);
+}
+
+/* --------------------------------------------------------------------------
+   7. Tooltip
+   -------------------------------------------------------------------------- */
+
+.p-tooltip {
+  position: absolute;
+  z-index: 100;
+  padding: var(--p-space-5) var(--p-space-7);
+  background: var(--p-color-tooltip-bg);
+  color: var(--p-color-tooltip-text);
+  border-radius: var(--p-radius);
+  font-family: var(--p-font-mono);
+  font-size: var(--p-text-base);
+  font-weight: var(--p-weight-regular);
+  letter-spacing: var(--p-tracking-tooltip);
+  line-height: 1.5;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.p-tooltip__value {
+  color: var(--p-color-accent-green);
+}
+
+.p-tooltip__label {
+  opacity: var(--p-opacity-muted);
+}
+
+/* --------------------------------------------------------------------------
+   8. Breadcrumbs
+   -------------------------------------------------------------------------- */
+
+.p-breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-family: var(--p-font-mono);
+  font-size: var(--p-text-sm);
+}
+
+.p-breadcrumbs__item {
+  opacity: var(--p-opacity-dim);
+}
+
+.p-breadcrumbs__item--current {
+  opacity: 1;
+}
+
+.p-breadcrumbs__link {
+  color: var(--p-color-text);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.p-breadcrumbs__link:hover {
+  opacity: 1;
+}
+
+.p-breadcrumbs__separator {
+  opacity: var(--p-opacity-dim);
+}
+
+/* --------------------------------------------------------------------------
+   9. Legend
+   -------------------------------------------------------------------------- */
+
+.p-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--p-space-4);
+  align-items: center;
+}
+
+.p-legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--p-font-mono);
+  font-size: var(--p-text-xs);
+  font-weight: var(--p-weight-regular);
+}
+
+.p-legend__swatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border: 1px solid var(--p-color-border);
+  flex-shrink: 0;
+}
+
+.p-legend__swatch--kalshi {
+  background: var(--p-color-kalshi);
+}
+
+.p-legend__swatch--polymarket {
+  background: var(--p-color-polymarket);
+}
+
+/* --------------------------------------------------------------------------
+   10. Data Table (dark terminal style)
+   -------------------------------------------------------------------------- */
+
+.p-data-table {
+  width: 100%;
+  background: var(--p-color-text);
+  color: var(--p-color-text-inverse);
+  font-family: var(--p-font-mono);
+  font-size: var(--p-text-md);
+  font-weight: var(--p-weight-regular);
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.p-data-table th,
+.p-data-table td {
+  text-align: left;
+  padding: var(--p-space-3) var(--p-space-4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.p-data-table th {
+  font-weight: var(--p-weight-medium);
+  font-size: var(--p-text-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  position: sticky;
+  top: 0;
+  background: var(--p-color-text);
+}
+
+.p-data-table__wrapper {
+  max-height: 400px;
+  overflow-y: auto;
+  border-radius: var(--p-radius);
+}
+
+/* Scrollbar styling for data table */
+.p-data-table__wrapper::-webkit-scrollbar {
+  width: 6px;
+}
+
+.p-data-table__wrapper::-webkit-scrollbar-track {
+  background: #111;
+}
+
+.p-data-table__wrapper::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 3px;
+}
+
+/* --------------------------------------------------------------------------
+   11. Dashboard Header
+   -------------------------------------------------------------------------- */
+
+.p-header {
+  padding: var(--p-space-8) 0;
+}
+
+.p-header__title {
+  font-family: var(--p-font-mono);
+  font-size: var(--p-text-base);
+  font-weight: var(--p-weight-medium);
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--p-space-4);
+}
+
+.p-header__tag {
+  display: inline-block;
+  padding: 2px 6px;
+  font-size: var(--p-text-xs);
+  font-weight: var(--p-weight-regular);
+  border: var(--p-border-width) solid var(--p-color-border);
+  border-radius: var(--p-radius);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* --------------------------------------------------------------------------
+   12. Nav Link (large serif display)
+   -------------------------------------------------------------------------- */
+
+.p-nav-link {
+  font-family: var(--p-font-serif);
+  font-size: var(--p-text-display-sm);
+  font-weight: var(--p-weight-light);
+  color: var(--p-color-text);
+  text-decoration: none;
+  line-height: 1.1;
+}
+
+.p-nav-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+@media (min-width: 1280px) {
+  .p-nav-link {
+    font-size: var(--p-text-display-lg);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   13. Loader
+   -------------------------------------------------------------------------- */
+
+.p-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+
+.p-loader__mark {
+  width: 40px;
+  height: 40px;
+  animation: p-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes p-pulse {
+  0%, 100% { opacity: 0.3; transform: scale(0.95); }
+  50%      { opacity: 1;   transform: scale(1); }
+}
+
+/* --------------------------------------------------------------------------
+   14. Footer / Disclaimer
+   -------------------------------------------------------------------------- */
+
+.p-footer {
+  padding: var(--p-space-8) 0;
+}
+
+.p-disclaimer {
+  font-family: var(--p-font-serif);
+  font-size: var(--p-text-base);
+  font-weight: var(--p-weight-regular);
+  line-height: 1.6;
+  opacity: var(--p-opacity-muted);
+}
+
+/* --------------------------------------------------------------------------
+   15. Range Slider
+   -------------------------------------------------------------------------- */
+
+.p-range {
+  position: relative;
+  width: 100%;
+  height: 32px;
+  user-select: none;
+}
+
+.p-range__track {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--p-color-border);
+  transform: translateY(-50%);
+}
+
+.p-range__fill {
+  position: absolute;
+  top: 50%;
+  height: 2px;
+  background: var(--p-color-text);
+  transform: translateY(-50%);
+}
+
+.p-range__handle {
+  position: absolute;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  background: var(--p-color-bg);
+  border: var(--p-border-width) solid var(--p-color-border);
+  border-radius: var(--p-radius);
+  transform: translate(-50%, -50%);
+  cursor: grab;
+  z-index: 2;
+}
+
+.p-range__handle:active {
+  cursor: grabbing;
+}
+
+.p-range__label {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--p-font-mono);
+  font-size: var(--p-text-sm);
+  white-space: nowrap;
+  padding-bottom: 4px;
+}
+
+.p-range__pip {
+  position: absolute;
+  top: calc(50% + 8px);
+  width: 1px;
+  height: 6px;
+  background: var(--p-color-border);
+}
+
+.p-range__pip-label {
+  position: absolute;
+  top: calc(50% + 18px);
+  transform: translateX(-50%);
+  font-family: var(--p-font-mono);
+  font-size: var(--p-text-xs);
+  opacity: var(--p-opacity-muted);
+}
+
+/* --------------------------------------------------------------------------
+   16. Card / Panel
+   -------------------------------------------------------------------------- */
+
+.p-card {
+  border: var(--p-border-width) solid var(--p-color-border);
+  border-radius: var(--p-radius);
+  padding: var(--p-space-8);
+  background: var(--p-color-bg);
+}
+
+.p-card__title {
+  font-family: var(--p-font-mono);
+  font-size: var(--p-text-base);
+  font-weight: var(--p-weight-medium);
+  margin: 0 0 var(--p-space-7) 0;
+}
+
+/* --------------------------------------------------------------------------
+   17. Chart Container
+   -------------------------------------------------------------------------- */
+
+.p-chart {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: var(--p-border-width) solid var(--p-color-border);
+  border-radius: var(--p-radius);
+  overflow: hidden;
+}
+
+.p-chart--square {
+  aspect-ratio: 1;
+}
+
+.p-chart canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}

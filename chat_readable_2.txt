@@ -1,0 +1,289 @@
+USER: Explain @offmute/ and trace a path from initial input through its main code flow
+
+---
+
+ASSISTANT: [Tool: Read({"file_path": "/root/southbridge/offmute/package.json"}...)]
+
+---
+
+USER: [Tool result:      1→{
+     2→  "name": "offmute",
+     3→  "version": "0.1.11",
+     4→  "author": "Hrishi Olickel <twitter-@hrishioa> (https://olickel.com)",
+     5→  "repository": {
+     6→    "type": "git",
+   ]
+
+---
+
+ASSISTANT: [Tool: Read({"file_path": "/root/southbridge/offmute/README.md"}...)]
+
+---
+
+USER: [Tool result:      1→# npx offmute 🎙️
+     2→
+     3→<div align="center">
+     4→
+     5→[![NPM version](https://img.shields.io/npm/v/offmute.svg)](https://www.npmjs.com/package/offmute)
+     6→[![License](https://]
+
+---
+
+ASSISTANT: [Tool: Bash({"command": "find /root/southbridge/offmute/src -type f | sort", "description": "List all source fil...)]
+
+---
+
+USER: [Tool result: /root/southbridge/offmute/src/describe.ts
+/root/southbridge/offmute/src/index.ts
+/root/southbridge/offmute/src/prompts.ts
+/root/southbridge/offmute/src/report.ts
+/root/southbridge/offmute/src/run.ts
+/]
+
+---
+
+ASSISTANT: [Tool: Read({"file_path": "/root/southbridge/offmute/src/run.ts"}...)]
+
+---
+
+USER: [Tool result:      1→#!/usr/bin/env node
+     2→import { Command } from "commander";
+     3→import path from "path";
+     4→import fs from "fs";
+     5→import ffmpeg from "fluent-ffmpeg";
+     6→import chalk from "]
+
+---
+
+ASSISTANT: [Tool: Read({"file_path": "/root/southbridge/offmute/src/index.ts"}...)]
+
+---
+
+ASSISTANT: [Tool: Read({"file_path": "/root/southbridge/offmute/src/describe.ts"}...)]
+
+---
+
+USER: [Tool result:      1→export { generateDescription } from "./describe";
+     2→export { generateTranscription } from "./transcribe";
+     3→export { generateReport } from "./report";
+     4→]
+
+---
+
+USER: [Tool result:      1→import path from "path";
+     2→import fs from "fs";
+     3→import { processAudioFile } from "./utils/audio-chunk";
+     4→import { extractVideoScreenshots } from "./utils/screenshot";
+     5→i]
+
+---
+
+ASSISTANT: [Tool: Read({"file_path": "/root/southbridge/offmute/src/transcribe.ts"}...)]
+
+---
+
+USER: [Tool result:      1→import path from "path";
+     2→import fs from "fs";
+     3→import { generateDescription, GenerateDescriptionResult } from "./describe";
+     4→import { generateWithGemini } from "./utils/gemin]
+
+---
+
+ASSISTANT: [Tool: Read({"file_path": "/root/southbridge/offmute/src/report.ts"}...)]
+
+---
+
+USER: [Tool result:      1→import { generateWithGemini } from "./utils/gemini";
+     2→import {
+     3→  REPORT_HEADINGS_JSONSCHEMA,
+     4→  REPORT_HEADINGS_PROMPT,
+     5→  REPORT_SECTION_GENERATION_PROMPT,
+     6→  Re]
+
+---
+
+ASSISTANT: [Tool: Read({"file_path": "/root/southbridge/offmute/src/prompts.ts"}...)]
+
+---
+
+USER: [Tool result:      1→// prettier-ignore
+     2→export const AUDIO_DESC_PROMPT = (fileName: string, userInstructions?: string) =>
+     3→`Describe this audio in two paragraphs with the following information:
+     4→]
+
+---
+
+ASSISTANT: Now let me read the utility files to complete the picture.
+
+---
+
+ASSISTANT: [Tool: Read({"file_path": "/root/southbridge/offmute/src/utils/gemini.ts"}...)]
+
+---
+
+USER: [Tool result:      1→import {
+     2→  GoogleGenerativeAI,
+     3→  GoogleGenerativeAIError,
+     4→  Part,
+     5→} from "@google/generative-ai";
+     6→import { GoogleAIFileManager, FileState } from "@google/gene]
+
+---
+
+ASSISTANT: [Tool: Read({"file_path": "/root/southbridge/offmute/src/utils/audio-chunk.ts"}...)]
+
+---
+
+USER: [Tool result:      1→import ffmpeg from "fluent-ffmpeg";
+     2→import * as fs from "fs";
+     3→import * as path from "path";
+     4→import * as os from "os";
+     5→
+     6→interface ChunkInfo {
+     7→  path: st]
+
+---
+
+ASSISTANT: [Tool: Read({"file_path": "/root/southbridge/offmute/src/utils/screenshot.ts"}...)]
+
+---
+
+USER: [Tool result:      1→import ffmpeg from "fluent-ffmpeg";
+     2→import * as fs from "fs";
+     3→import * as path from "path";
+     4→import * as os from "os";
+     5→
+     6→interface ScreenshotInfo {
+     7→  pat]
+
+---
+
+ASSISTANT: ## offmute — Explained
+
+**offmute** is a CLI tool and Node library that transcribes and analyzes meeting recordings (audio/video) using Google's Gemini LLMs. It does speaker diarization, generates transcripts, and optionally produces structured meeting reports — all without a dedicated speech-to-text engine.
+
+---
+
+### Architecture Overview
+
+```
+src/
+├── run.ts            # CLI entrypoint (commander)
+├── index.ts          # Library entrypoint (re-exports 3 functions)
+├── describe.ts       # Stage 1: Content description
+├── transcribe.ts     # Stage 2: Diarized transcription
+├── report.ts         # Stage 3: "Spreadfill" report generation
+├── prompts.ts        # All LLM prompt templates
+└── utils/
+    ├── gemini.ts      # Gemini API wrapper (upload, generate, retry, cleanup)
+    ├── audio-chunk.ts # ffmpeg: split audio into overlapping MP3 chunks
+    ├── screenshot.ts  # ffmpeg: extract evenly-spaced video screenshots
+    ├── check-type.ts  # File extension detection (audio vs video)
+    ├── ffmpeg-check.ts# Verify ffmpeg is installed
+    └── sanitize.ts    # Filesystem-safe name sanitization
+```
+
+---
+
+### End-to-End Flow
+
+Starting from `npx offmute meeting.mp4 --model pro --report`:
+
+#### 1. CLI Bootstrap (`run.ts`)
+- Checks ffmpeg is available and `GEMINI_API_KEY` is set
+- Parses args with `commander` — resolves model selection (e.g. `pro` → `gemini-2.5-pro` for all three stages)
+- If input is a directory, recursively finds all audio/video files
+- Calls `processFile()` for each file sequentially
+
+#### 2. Stage 1 — Description (`describe.ts:generateDescription`)
+Two things happen **in parallel** via `Promise.all`:
+
+- **Screenshots** (video only): `extractVideoScreenshots` uses ffmpeg to grab N evenly-spaced frames → uploads them to Gemini via `GoogleAIFileManager` → sends `IMAGE_DESC_PROMPT` asking "who are the speakers, what's on screen?" → returns `imageDescription`
+- **Audio analysis**: `processAudioFile` uses ffmpeg to split the audio into overlapping MP3 chunks (default 10min, 1min overlap) and a separate "tag sample" (first 20min) → uploads the tag sample to Gemini → sends `AUDIO_DESC_PROMPT` asking "who's talking, what are the topics?" → returns `audioDescription`
+
+Then a **merge step** sends both descriptions to Gemini with `MERGE_DESC_PROMPT` to produce a single coherent `finalDescription` of the meeting.
+
+#### 3. Stage 2 — Transcription (`transcribe.ts:generateTranscription`)
+Processes audio chunks **sequentially** (to maintain conversational context):
+
+- For each chunk, builds `TRANSCRIPTION_PROMPT` with: the merged description, chunk number, and the last 20 lines of the previous chunk's transcription
+- Uploads the chunk MP3 to Gemini, generates diarized text in `~[Speaker Name]~: text` format
+- Incrementally writes to `<filename>_transcription.md` so users can watch progress in real time
+- The output file includes metadata (file dates, size), the description, audio/visual analysis, and full transcription
+
+#### 4. Stage 3 — Report (`report.ts:generateReport`, optional `--report`)
+Uses the **Spreadfill** technique:
+
+1. **Generate structure**: Sends description + transcript to Gemini with `REPORT_HEADINGS_PROMPT` and a JSON schema → gets back section titles/descriptions (action items, participant profiles, contacts, etc.)
+2. **Fill sections independently**: For each section, sends the full transcript + description + section spec via `REPORT_SECTION_GENERATION_PROMPT` → generates that section's markdown content
+3. **Incremental file updates**: The report `.md` file is created early with placeholders, then each section is swapped in as it completes
+4. **Finalize**: Strips progress indicators from the file
+
+#### 5. Cleanup
+If `--save-intermediates` wasn't passed, the temp directory (screenshots, audio chunks, progress JSON) is deleted via `fs.rmSync`.
+
+---
+
+### Key Design Decisions
+
+- **Gemini File API** (`utils/gemini.ts`): All media is uploaded via `GoogleAIFileManager`, polled until processed, then referenced by URI in generation calls. Files are always cleaned up in a `finally` block.
+- **No speech-to-text engine**: Transcription is done entirely by prompting the LLM with raw audio — the "experiment" referenced in the package description.
+- **Overlapping chunks**: Audio chunks overlap by 1 minute (configurable) so the LLM doesn't lose speaker context at boundaries. The previous chunk's last 20 lines are also passed as text context.
+- **Temperature tuning**: Transcription uses `0.2` (consistency), report sections use `0.3` (slight creativity), descriptions use `0` (deterministic).
+
+---
+
+USER: What are the outputs of this?
+
+---
+
+ASSISTANT: Based on the code I already read, here are all the outputs offmute produces:
+
+### Primary Outputs (written to the input file's directory by default)
+
+1. **`<filename>_transcription.md`** — Always produced. A markdown file containing:
+   - File metadata (filename, creation/modification dates, processing date, file size, path, user instructions if any)
+   - `# Meeting Description` — the merged description
+   - `# Audio Analysis` — what Gemini inferred from the audio
+   - `# Visual Analysis` — what Gemini inferred from screenshots (video only)
+   - `# Full Transcription` — diarized transcript in `~[Speaker Name]~: text` format
+
+2. **`<filename>_report.md`** — Only when `--report` is passed. A markdown file containing:
+   - Report metadata (name, generation date, path)
+   - `# Meeting Report` with dynamically generated sections (e.g. participant profiles, action items, contacts, discussion flow)
+
+### Intermediate Outputs (only with `--save-intermediates`)
+
+Saved to `.offmute_<filename>/` (or a custom dir via `--intermediates-dir`):
+
+```
+.offmute_<filename>/
+├── screenshots/                  # Extracted JPG frames (video only)
+│   └── <name>_screenshot_0.jpg ...
+├── audio/
+│   ├── <name>_tag_sample.mp3     # First 20min audio sample
+│   └── <name>_chunk_0.mp3 ...    # 10min overlapping MP3 chunks
+├── intermediate_output.json      # Image/audio/merged descriptions + prompts
+├── config.json                   # Model, description, chunk count
+└── transcription/
+    ├── transcription_progress.json  # Per-chunk prompts + responses
+    └── raw_transcriptions.json      # Array of raw chunk transcription strings
+```
+
+If `--report` is also used, an additional `.offmute/report/` directory is created in the output path:
+
+```
+.offmute/report/
+└── report_generation.json     # Headings prompt, structure, per-section prompts + responses
+```
+
+### Console Output
+
+- Progress bars (screenshots, audio processing, AI processing) during the description stage
+- `Processing chunk N/M` logs during transcription
+- `Processing section N/M: <title>` logs during report generation
+- Final summary: total time, seconds-per-minute ratio, output file paths, success/failure counts
+
+### Ephemeral (cleaned up unless `--save-intermediates`)
+
+Without `--save-intermediates`, all intermediate files (screenshots, audio chunks, JSON progress files) are written to a temp directory (`os.tmpdir()`) and deleted via `fs.rmSync` after processing completes. Only the `.md` files persist.
