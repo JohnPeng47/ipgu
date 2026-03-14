@@ -1,0 +1,86 @@
+/* ==========================================================================
+   Paradigm Design Tokens
+   Extracted from predictions.paradigm.xyz
+   ========================================================================== */
+
+:root {
+  /* ---- Colors ---- */
+  --p-color-bg:            #ffffff;
+  --p-color-text:          #000000;
+  --p-color-text-inverse:  #ffffff;
+  --p-color-accent-green:  #00e100;
+  --p-color-kalshi:        #ABDFC5;
+  --p-color-polymarket:    #92A8F3;
+
+  --p-color-border:        #000000;
+  --p-color-border-toggle: #000000;
+  --p-color-disabled-bg:   #f9f9f9;
+  --p-color-disabled-text: #999999;
+  --p-color-disabled-border: #cccccc;
+  --p-color-hover-bg:      #f0f0f0;
+  --p-color-active-bg:     #000000;
+  --p-color-active-text:   #ffffff;
+  --p-color-tooltip-bg:    #000000;
+  --p-color-tooltip-text:  #ffffff;
+
+  /* ---- Typography — Families ---- */
+  --p-font-mono:   "Atlas Typewriter Web", monospace;
+  --p-font-serif:  "Martina Plantijn", serif;
+
+  /* ---- Typography — Sizes ---- */
+  --p-text-xs:   10px;
+  --p-text-sm:   12px;
+  --p-text-md:   13px;
+  --p-text-base: 14px;
+  --p-text-lg:   16px;
+  --p-text-display-sm: 50px;
+  --p-text-display-lg: 80px;
+
+  /* ---- Typography — Weights ---- */
+  --p-weight-light:   300;
+  --p-weight-regular: 400;
+  --p-weight-medium:  500;
+
+  /* ---- Typography — Letter Spacing ---- */
+  --p-tracking-tooltip: 0.28px;
+
+  /* ---- Borders ---- */
+  --p-border-width:        1px;
+  --p-border-width-toggle: 0.8px;
+  --p-radius:              2px;
+
+  /* ---- Spacing ---- */
+  --p-space-1:  3px;
+  --p-space-2:  5px;
+  --p-space-3:  6px;
+  --p-space-4:  8px;
+  --p-space-5:  9px;
+  --p-space-6:  10px;
+  --p-space-7:  14px;
+  --p-space-8:  20px;
+  --p-space-9:  60px;
+
+  /* ---- Layout ---- */
+  --p-max-width:     1400px;
+  --p-gutter:        20px;
+  --p-gutter-lg:     60px;
+
+  /* ---- Breakpoints (reference only — use in media queries) ---- */
+  /* --p-bp-xs:   490px;  */
+  /* --p-bp-sm:   640px;  */
+  /* --p-bp-md:   768px;  */
+  /* --p-bp-lg:   890px;  */
+  /* --p-bp-xl:   960px;  */
+  /* --p-bp-2xl:  1024px; */
+  /* --p-bp-3xl:  1280px; */
+  /* --p-bp-4xl:  1345px; */
+
+  /* ---- Opacity ---- */
+  --p-opacity-muted:    0.5;
+  --p-opacity-dim:      0.4;
+  --p-opacity-disabled: 0.5;
+
+  /* ---- Transitions ---- */
+  --p-transition-fast: 120ms ease;
+  --p-transition-base: 200ms ease;
+}

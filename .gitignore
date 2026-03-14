@@ -18,6 +18,9 @@ yarn-error.log*
 lerna-debug.log*
 .pnpm-debug.log*
 
+# data
+data/
+
 # Caches
 
 .cache
